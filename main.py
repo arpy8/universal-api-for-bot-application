@@ -17,7 +17,7 @@ substitution_mapping = {
     'Z': '९', 'h': '!',
 }
 
-@app.before_request
+@app.before_request     
 def check_auth():
     token = request.headers.get('Authorization')
     
@@ -29,7 +29,7 @@ def check_auth():
     decoded_token_bytes = decoded_token.encode('utf-8')
     print("Decoded token:", decoded_token_bytes)
     
-    if decoded_token_bytes != AUTH_TOKEN.encode('utf-8'):
+    if decoded_token_bytes != str(AUTH_TOKEN):
         abort(401, 'Unauthorized access >:(')
 
 @app.route("/")
