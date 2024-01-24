@@ -20,6 +20,10 @@ substitution_mapping = {
 @app.before_request
 def check_auth():
     token = request.headers.get('Authorization')
+    
+    if not token:
+        abort(401, 'Unauthorized access >:(')
+
     reverse_mapping = {value: key for key, value in substitution_mapping.items()}
     decoded_token = ''.join(reverse_mapping.get(char, char) for char in token)
     decoded_token_bytes = decoded_token.encode('utf-8')
