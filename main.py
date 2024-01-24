@@ -8,10 +8,22 @@ DD_TOKEN = os.environ.get('DD_AUTH_TOKEN')
 
 app = Flask(__name__)
 
+substitution_mapping = {
+    'S': 'अ', 'h': 'भ', 'E': 'च', '0': 'ड', 'd': 'ई', 'M': 'फ', '4': 'ग',
+    '_': 'ह', 'K': 'इ', '6': 'ज', 'c': 'क', 'Q': 'ल', 'N': 'म', 'B': 'न',
+    'y': 'ओ', 'x': 'प', 'o': 'क', 'U': 'र', 'Y': 'स', '3': 'त', '2': 'उ',
+    'a': 'व', 'J': 'व', 'K': 'क्ष', 'g': 'य', 'I': 'श', 'e': '०', 'f': '१',
+    '3': '२', 'Q': '३', '2': '४', 'H': '५', 'a': '६', 'G': '७', 't': '८',
+    'Z': '९', 'h': '!',
+}
+
 @app.before_request
 def check_auth():
     token = request.headers.get('Authorization')
-    if token != DD_TOKEN:
+    reverse_mapping = {value: key for key, value in substitution_mapping.items()}
+    decoded_token = ''.join(reverse_mapping.get(char, char) for char in token)
+
+    if decoded_token != DD_TOKEN:
         abort(401, 'Unauthorized access >:(')
 
 @app.route("/")
