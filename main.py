@@ -3,8 +3,8 @@ import requests
 from flask import Flask, request, jsonify, abort
 
 # CONSTANTS
-TOKEN = os.environ.get('DD_TOKEN')
-DD_TOKEN = os.environ.get('DD_AUTH_TOKEN')
+DC_TOKEN = os.environ.get('DC_TOKEN')
+AUTH_TOKEN = os.environ.get('AUTH_TOKEN')
 
 app = Flask(__name__)
 
@@ -22,10 +22,9 @@ def check_auth():
     token = request.headers.get('Authorization')
     reverse_mapping = {value: key for key, value in substitution_mapping.items()}
     decoded_token = ''.join(reverse_mapping.get(char, char) for char in token)
-
     decoded_token_bytes = decoded_token.encode('utf-8')
 
-    if decoded_token_bytes != DD_TOKEN.encode('utf-8'):
+    if decoded_token_bytes != AUTH_TOKEN.encode('utf-8'):
         abort(401, 'Unauthorized access >:(')
 
 @app.route("/")
@@ -41,7 +40,7 @@ def send_data():
         response = requests.post(
             url=f'https://discord.com/api/v10/channels/{str(channel_id)}/messages', 
             headers={
-                'Authorization': f'Bot {TOKEN}',
+                'Authorization': f'Bot {DC_TOKEN}',
                 'Content-Type': 'application/json',
             },
             json={
