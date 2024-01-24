@@ -1,6 +1,7 @@
+import os
 import requests
 
-AUTH_TOKEN = "A!CDEFGHXJXK3MN!OPQRS226WXYZ012X34567894!OsRK845"
+AUTH_TOKEN = os.environ["AUTH_TOKEN"]
 
 def main():
     response = requests.get(
