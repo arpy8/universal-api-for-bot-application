@@ -31,8 +31,6 @@ def check_auth():
 
     decoded_token = decode_token(incoming_token)
 
-    print(decoded_token)
-    
     if decoded_token != AUTH_TOKEN:
         abort(401, 'Unauthorized access >:(')
 

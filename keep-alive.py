@@ -1,20 +1,14 @@
 import requests
 
-AUTH_TOKEN = "ShE0dM4_K6KcQNBhyxoUY33aJKgIef3KQ2HaGtZ2hysUc825"
-
-reverse_mapping = {value: key for key, value in substitution_mapping.items()}
-decoded_token = ''.join(reverse_mapping.get(char, char) for char in AUTH_TOKEN)
-decoded_token_bytes = decoded_token.encode('utf-8')
-print(decoded_token_bytes)
+AUTH_TOKEN = "A!CDEFGHXJXK3MN!OPQRS226WXYZ012X34567894!OsRK845"
 
 def main():
     response = requests.get(
         url="https://universal-api.onrender.com/", 
         headers={
-            "Authorization": AUTH_TOKEN.encode("utf-8")
+            "Authorization": AUTH_TOKEN
         }
     )
-
     if response.status_code == 200:
         try:
             note = response.json()["NOTE"]
