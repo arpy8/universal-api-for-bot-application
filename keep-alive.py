@@ -5,7 +5,7 @@ def main():
         requests.get(
             url="https://universal-api.onrender.com/", 
             headers = {
-                "Authorization": os.environ["AUTH_TOKEN"]
+                "Authorization": os.environ["AUTH_TOKEN"].encode("utf-8")
             }
         ).json()["NOTE"]
     )

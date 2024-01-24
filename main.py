@@ -23,7 +23,9 @@ def check_auth():
     reverse_mapping = {value: key for key, value in substitution_mapping.items()}
     decoded_token = ''.join(reverse_mapping.get(char, char) for char in token)
 
-    if decoded_token != DD_TOKEN:
+    decoded_token_bytes = decoded_token.encode('utf-8')
+
+    if decoded_token_bytes != DD_TOKEN.encode('utf-8'):
         abort(401, 'Unauthorized access >:(')
 
 @app.route("/")
