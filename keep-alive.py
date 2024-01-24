@@ -17,8 +17,7 @@ print(decoded_token_bytes)
 
 def main():
     response = requests.get(
-        # url="https://universal-api.onrender.com/", 
-        url="http://127.0.0.1:5000/",
+        url="https://universal-api.onrender.com/", 
         headers={
             "Authorization": AUTH_TOKEN.encode("utf-8")
         }
