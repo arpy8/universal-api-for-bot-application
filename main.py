@@ -3,33 +3,37 @@ import requests
 from flask import Flask, request, jsonify, abort
 
 # CONSTANTS
-DC_TOKEN = os.environ.get('DC_TOKEN')
 AUTH_TOKEN = os.environ.get('AUTH_TOKEN')
+DC_TOKEN = os.environ.get('DC_TOKEN')
 
 app = Flask(__name__)
 
 substitution_mapping = {
-    'S': 'अ', 'h': 'भ', 'E': 'च', '0': 'ड', 'd': 'ई', 'M': 'फ', '4': 'ग',
-    '_': 'ह', 'K': 'इ', '6': 'ज', 'c': 'क', 'Q': 'ल', 'N': 'म', 'B': 'न',
-    'y': 'ओ', 'x': 'प', 'o': 'क', 'U': 'र', 'Y': 'स', '3': 'त', '2': 'उ',
-    'a': 'व', 'J': 'व', 'K': 'क्ष', 'g': 'य', 'I': 'श', 'e': '०', 'f': '१',
-    '3': '२', 'Q': '३', '2': '४', 'H': '५', 'a': '६', 'G': '७', 't': '८',
-    'Z': '९', 'h': '!',
+    'S': 'A', 'h': 'B', 'E': 'C', '0': 'D', 'd': 'E', 'M': 'F', '4': 'G',
+    '_': 'H', 'K': 'I', '6': 'J', 'c': 'K', 'Q': 'L', 'N': 'M', 'B': 'N',
+    'y': 'O', 'x': 'P', 'o': 'Q', 'U': 'R', 'Y': 'S', '3': 'T', '2': 'U',
+    'a': 'V', 'J': 'W', 'K': 'X', 'g': 'Y', 'I': 'Z', 'e': '0', 'f': '1',
+    '3': '2', 'Q': '3', '2': '4', 'H': '5', 'a': '6', 'G': '7', 't': '8',
+    'Z': '9', 'h': '!',
 }
+
+def decode_token(obfuscated_token):
+    reverse_mapping = {value: key for key, value in substitution_mapping.items()}
+    decoded_token = ''.join(reverse_mapping.get(char, char) for char in obfuscated_token)
+    return decoded_token
 
 @app.before_request     
 def check_auth():
-    token = request.headers.get('Authorization')
+    incoming_token = request.headers.get('Authorization')
     
-    if not token:
+    if not incoming_token:
         abort(401, 'Unauthorized access >:(')
 
-    reverse_mapping = {value: key for key, value in substitution_mapping.items()}
-    decoded_token = ''.join(reverse_mapping.get(char, char) for char in token)
-    decoded_token_bytes = decoded_token.encode('utf-8')
-    print("Decoded token:", decoded_token_bytes)
+    decoded_token = decode_token(incoming_token)
+
+    print(decoded_token)
     
-    if decoded_token_bytes != str(AUTH_TOKEN):
+    if decoded_token != AUTH_TOKEN:
         abort(401, 'Unauthorized access >:(')
 
 @app.route("/")
