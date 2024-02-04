@@ -4,6 +4,8 @@ import requests
 AUTH_TOKEN = os.environ["AUTH_TOKEN"]
 
 def main():
+    print(AUTH_TOKEN)
+    
     response = requests.get(
         url="https://universal-api.onrender.com/", 
         headers={
