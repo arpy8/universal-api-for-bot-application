@@ -18,6 +18,7 @@ substitution_mapping = {
 }
 
 def decode_token(obfuscated_token):
+    return obfuscated_token
     reverse_mapping = {value: key for key, value in substitution_mapping.items()}
     decoded_token = ''.join(reverse_mapping.get(char, char) for char in obfuscated_token)
     return decoded_token
